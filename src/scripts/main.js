@@ -10,35 +10,34 @@ const field = document.querySelector('.field');
 
 function updateButtonStates() {
   const trs = field.querySelectorAll('tr');
-  const tds = trs[0] ? trs[0].children : [];
+  const tds = trs.length > 0 ? trs[0].children : [];
 
   rowAppended.disabled = trs.length >= 10;
-
   rowRemover.disabled = trs.length <= 2;
-
   columnAppended.disabled = tds.length >= 10;
-
   columnRemover.disabled = tds.length <= 2;
 }
 
 updateButtonStates();
 
 rowAppended.addEventListener('click', (e) => {
-  const trs = document.querySelectorAll('tr');
+  const trs = field.querySelectorAll('tr');
 
   if (trs.length < 10) {
-    const trCopy = field.querySelector('tr').cloneNode(true);
+    const newRow = field.insertRow();
 
-    field.append(trCopy);
+    for (let i = 0; i < trs[0].children.length; i++) {
+      newRow.insertCell();
+    }
     updateButtonStates();
   }
 });
 
 rowRemover.addEventListener('click', (e) => {
-  const trs = document.querySelectorAll('tr');
+  const trs = field.rows;
 
-  if (trs.length > 2 && field.lastElementChild) {
-    field.lastElementChild.remove();
+  if (trs.length > 2) {
+    field.deleteRow(trs.length - 1);
     updateButtonStates();
   }
 });
